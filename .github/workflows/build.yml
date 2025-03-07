@@ -17,10 +17,14 @@ jobs:
           fetch-depth: '0'
 
       - name: Set active Xcode path
-        run: |
-          XCODE_VERSION=$(cat versions.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["xcode"]);')
-          sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app/Contents/Developer
-
+        run: XCODE_VERSION=$(cat versions.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["xcode"]);')
+        if [ -d "/Applications/Xcode_$XCODE_VERSION.app/Contents/Developer" ]; then
+        sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app/Contents/Developer
+        else
+        echo "Error: Xcode version $XCODE_VERSION does not exist."
+        exit 1
+        fi
+    
       - name: Create canonical source directory
         run: |
           set -x
