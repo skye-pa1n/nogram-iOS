@@ -11,10 +11,10 @@ jobs:
     runs-on: macos-13
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-          fetch-depth: '0'
+          fetch-depth: '1'
 
       - name: Set active Xcode path
         run: |
@@ -23,6 +23,7 @@ jobs:
           sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app/Contents/Developer
           else
           echo "Error: Xcode version $XCODE_VERSION does not exist."
+          cat versions.json
           exit 1
           fi
     
